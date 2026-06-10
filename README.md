@@ -1,2 +1,2 @@
 # msh
- simple programming language written in python and c#
+ simple programming language written in python 
