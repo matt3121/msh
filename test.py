@@ -1,22 +1,22 @@
+TT_INT = "INT"
+TT_PLUS = "PLUS"
+TT_MINUS = "MINUS"
+TT_FLOAT = "FLOAT"
+TT_MUL = "MUL"
+TT_DIV = "DIV"
+TT_LPAREN = "LPAREN"
+TT_RPAREN = "RPAREN"
+
+
+DIGITS = '0123456789'
+
+
+class errorsystem:
+    pass 
+
+
+
 class Token:
-    
-
-
-
-
-    TT_INT = "INT"
-    TT_PLUS = "PLUS"
-    TT_MINUS = "MINUS"
-    TT_FLOAT = "FLOAT"
-    TT_MUL = "MUL"
-    TT_DIV = "DIV"
-    TT_LPAREN = "LPAREN"
-    TT_RPAREN = "RPAREN"
-
-
-
-
-
     def token(self, type_, value):
         self.type_ = self.type_
         self.value = self.value 
@@ -44,6 +44,8 @@ class lexershi:
         while self.currentchar != None: 
             if self.currentchar in " \t":
                 self.advance()
+            elif self.currentchar in DIGITS:
+                tokens.append(self.makenum())
             elif self.currentchar == "+":
                 tokens.append(Token(TT_PLUS))
                 self.advance()
@@ -56,5 +58,34 @@ class lexershi:
             elif self.currentchar == "/":
                 tokens.append(Token(TT_DIV))
                 self.advance()
+            elif self.currentchar == ")":
+                tokens.append(Token(TT_RPAREN))
+                self.advance()
+            elif self.currentchar == "(":
+                tokens.append(Token(TT_LPAREN))
+                self.advance()
+            else: 
+                pass
+
+            
+        def makenum(self):
+            numstr = ''
+            dotcount = 0
+            while self.currentchar != None and self.currentchar in DIGITS + '.':
+                if self.currentchar == '.':
+                    if dotcount == 1:
+                        break 
+                    dotcount +=1 
+                    numstr += '.'
+                else:
+                    numstr += self.currentchar 
+            
+            if dotcount == 0:
+                return Token(TT_INT, int(numstr))
+            else:
+                return Token(TT_FLOAT, float(numstr))
+                
+
+
 
         return tokens 
